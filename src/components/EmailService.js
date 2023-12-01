@@ -12,7 +12,7 @@ const sendEmail = async (emailDetails) => {
         },
         body: JSON.stringify(emailDetails)
       });
-  
+      
       const data = await response.json();
       if (data.success) {
         console.log('Email sent successfully:', data);
