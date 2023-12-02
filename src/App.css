@@ -101,54 +101,49 @@ input, select {
   }
 }
 
-/* Logo Styling */
-.navbar-logo {
-  width: 80px; /* Set the desired width */
-  height: auto; /* Maintain the image aspect ratio */
-}
-
-/* Navbar Styling */
-/* Add this to your CSS file or in-line styles */
+/* NavBar Styling*/
 .navbar {
   background-color: #333;
   padding: 10px;
 }
 
 .navbar-logo {
-  width: 80px; /* Set the desired width */
-  height: auto; /* Maintain the image aspect ratio */
-  vertical-align: middle; /* Align the logo vertically in the middle */
+  width: 80px;
+  height: auto;
+  vertical-align: middle;
 }
 
 .brand-text {
   color: #fff;
   font-size: 18px;
-  margin-left: 10px; /* Adjust the spacing between logo and text */
-  display: inline-block; /* Allows vertical alignment */
-  vertical-align: middle; /* Align the text vertically in the middle */
-}
-
-.navbar-brand {
-  display: flex; /* Display the brand content as a flex container */
-  align-items: center; /* Vertically center align items */
+  margin-left: 10px;
+  display: inline-block;
+  vertical-align: middle;
 }
 
 .navbar-nav {
   list-style-type: none;
   margin: 0;
   padding: 0;
-  display: flex; /* Display list items horizontally */
+  display: flex;
 }
 
 .nav-item {
   margin-right: 15px;
 }
 
+/* Style the nav-link class to set background and text color */
 .nav-link {
   color: #fff;
   text-decoration: none;
+  background-color: transparent; /* Set the background color to transparent */
+  padding: 8px 12px; /* Add padding to the buttons for better visibility */
+  border-radius: 4px; /* Optionally, add some border-radius for rounded corners */
 }
 
+/* Hover styles for better user feedback */
 .nav-link:hover {
-  text-decoration: underline;
+  background-color: #555; /* Change the background color on hover */
+  transition: background-color 0.3s ease; /* Add a smooth transition effect */
 }
+
