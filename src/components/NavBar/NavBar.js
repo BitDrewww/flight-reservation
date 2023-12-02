@@ -1,27 +1,42 @@
+// NavBar.js
+
 import React from 'react';
-import { useNavigate } from 'react-router-dom';
 
-function NavBar() {
-  let navigate = useNavigate();
-
+const NavBar = () => {
   return (
-    <div className="navbar">
-      <div className="navbar-container">
-        <div className="logo">
-          <img src="/path-to-your-logo.png" alt="B Airways" />
-        </div>
-        <div className="nav-links">
-          <button onClick={() => navigate("/")}>Home</button>
-          <button onClick={() => navigate("/about")}>About</button>
-          <button onClick={() => navigate("/team")}>Team</button>
-        </div>
-        <div className="auth-links">
-          <button onClick={() => navigate("/signin")}>Login</button>
-          <button onClick={() => navigate("/signup")}>Register</button>
-        </div>
-      </div>
-    </div>
+    <nav className="navbar">
+      <a href="/" className="navbar-brand">
+        <img
+          src={process.env.PUBLIC_URL + '/logo.png'}
+          alt="YourLogo"
+          className="navbar-logo"
+        />
+        <span className="brand-text">Flight Reservation App</span>
+      </a>
+      <ul className="navbar-nav">
+        <li className="nav-item">
+          <a href="/" className="nav-link">
+            Home
+          </a>
+        </li>
+        <li className="nav-item">
+          <a href="/flights" className="nav-link">
+            Flights
+          </a>
+        </li>
+        <li className="nav-item">
+          <a href="/register" className="nav-link">
+            Register
+          </a>
+        </li>
+        <li className="nav-item">
+          <a href="/login" className="nav-link">
+            Login
+          </a>
+        </li>
+      </ul>
+    </nav>
   );
-}
+};
 
 export default NavBar;

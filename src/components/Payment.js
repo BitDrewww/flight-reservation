@@ -1,6 +1,19 @@
 // Payment.js
 import React, { useState } from 'react';
-// Import necessary hooks and components from a payment gateway library, e.g., Stripe
+
+// Placeholder function for payment details tokenization
+const tokenizePaymentDetails = async (paymentInfo) => {
+  // Simulate tokenization process (replace this with your actual implementation)
+  const token = 'mocked-payment-token';
+  const error = null; // Set to a non-null value to simulate an error
+
+  // Simulate asynchronous behavior (e.g., API call)
+  return new Promise((resolve) => {
+    setTimeout(() => {
+      resolve({ token, error });
+    }, 1000); // Simulate a 1-second delay
+  });
+};
 
 const Payment = ({ totalPrice, onPaymentSuccess, onPaymentFailure }) => {
   const [paymentInfo, setPaymentInfo] = useState({
@@ -19,18 +32,16 @@ const Payment = ({ totalPrice, onPaymentSuccess, onPaymentFailure }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // Call the payment API (e.g., Stripe) and handle frontend tokenization if required
-    // This is a pseudo-function. Replace with your payment gateway's method
-    const { token, error } = await tokenizePaymentDetails(paymentInfo);
-
-    if (error) {
-      onPaymentFailure(error);
-      return;
-    }
-
-    // Send the token to your backend to process the payment
-    // Your backend will then send the token to the payment gateway to complete the transaction
     try {
+      // Call the placeholder tokenizePaymentDetails function
+      const { token, error } = await tokenizePaymentDetails(paymentInfo);
+
+      if (error) {
+        onPaymentFailure(error);
+        return;
+      }
+
+      // Simulate sending the token to your backend to process the payment
       const response = await fetch('/api/payment', {
         method: 'POST',
         headers: {
@@ -52,40 +63,7 @@ const Payment = ({ totalPrice, onPaymentSuccess, onPaymentFailure }) => {
 
   return (
     <form onSubmit={handleSubmit}>
-      <h3>Payment Details</h3>
-      <input
-        type="text"
-        name="cardNumber"
-        value={paymentInfo.cardNumber}
-        onChange={handleChange}
-        placeholder="Card Number"
-        required
-      />
-      <input
-        type="text"
-        name="expiryDate"
-        value={paymentInfo.expiryDate}
-        onChange={handleChange}
-        placeholder="MM/YY"
-        required
-      />
-      <input
-        type="text"
-        name="cvv"
-        value={paymentInfo.cvv}
-        onChange={handleChange}
-        placeholder="CVV"
-        required
-      />
-      <input
-        type="text"
-        name="cardholderName"
-        value={paymentInfo.cardholderName}
-        onChange={handleChange}
-        placeholder="Cardholder Name"
-        required
-      />
-      <button type="submit">Pay {totalPrice}</button>
+      {/* ... rest of the form ... */}
     </form>
   );
 };
