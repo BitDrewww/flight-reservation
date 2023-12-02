@@ -22,12 +22,37 @@ const SeatSelection = ({ flightId, onSeatSelect, onNext }) => {
     navigate('/payment');
   };
 
+  // Example seat map (you can customize this based on your actual data)
+  const seatMap = [
+    ['1A', '1B', '1C', '1D'],
+    ['2A', '2B', '2C', '2D'],
+    ['3A', '3B', '3C', '3D'],
+    // Add more rows and seats as needed
+  ];
+
   return (
     <div>
       <h2>Seat Selection</h2>
       <p>Select your preferred seat:</p>
-      {/* Add your seat map and selection UI here */}
-      <button onClick={handleNext}>Next (Proceed to Payment)</button>
+
+      {/* Display the seat map */}
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))', gap: '10px' }}>
+        {seatMap.map((row, rowIndex) => (
+          <div key={rowIndex}>
+            {row.map((seat, seatIndex) => (
+              <button
+                key={seatIndex}
+                style={{ width: '200px', height: '200px', backgroundColor: selectedSeat === seat ? 'blue' : 'gray' }}
+                onClick={() => handleSeatSelect(seat)}
+              >
+                {seat}
+              </button>
+            ))}
+          </div>
+        ))}
+      </div>
+
+      <button style={{ marginTop: '10px', marginBottom: '20px' }} onClick={handleNext}>Next (Proceed to Payment)</button>
     </div>
   );
 };

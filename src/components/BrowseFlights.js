@@ -93,6 +93,7 @@ const BrowseFlights = () => {
           <ul>
             {flights.map(flight => (
               <li key={flight.id}>
+                <h3 style={{ textAlign: 'Center' }}></h3>
                 {"Sample Flight"}
                 <button onClick={() => handleSelect(flight)} style={{ marginLeft: '10px' }}>Select</button>
               </li>

@@ -4,22 +4,28 @@ import axios from 'axios';
 
 const Payment = (props) => {
   const [flightDetails, setFlightDetails] = useState(null);
+  const [subtotal, setSubtotal] = useState(0);
 
   useEffect(() => {
     const fetchFlightDetails = async () => {
       try {
-        // Check if props.params is defined before accessing flightId
-        if (props.params && props.params.flightId) {
-          const response = await axios.get(`/api/flights/${props.params.flightId}`);
-          setFlightDetails(response.data);
-        }
+        // Dummy flight data with a 'price' property
+        const dummyFlightData = {
+          name: 'Sample Flight',
+          departure: 'City A',
+          destination: 'City B',
+          price: 500, // Dummy price in dollars
+        };
+
+        setFlightDetails(dummyFlightData);
+        setSubtotal(dummyFlightData.price);
       } catch (error) {
         console.error(error);
       }
     };
 
     fetchFlightDetails();
-  }, [props.params]); // Include props.params in the dependency array
+  }, []);
 
   const handlePaymentSubmit = () => {
     // Implement your payment logic here
@@ -31,7 +37,7 @@ const Payment = (props) => {
 
   return (
     <div>
-      <h2>Payment Form</h2>
+      <h2>Payment</h2>
       {flightDetails && (
         <div>
           <h3>Flight Details</h3>
@@ -40,15 +46,23 @@ const Payment = (props) => {
           <p>Destination: {flightDetails.destination}</p>
         </div>
       )}
+
+      <div>
+        <h3>Payment Details</h3>
+        <p>Subtotal: ${subtotal.toFixed(2)}</p>
+      </div>
+
       <form>
         {/* Add your credit card form fields here */}
-        <label>Card Number:</label>
+        <label>Card Number: </label>
         <input type="text" />
-        <label>Expiration Date:</label>
+        <label>Expiration Date: </label>
         <input type="text" />
-        <label>CVV:</label>
+        <label>CVV: </label>
         <input type="text" />
-        <button type="button" onClick={handlePaymentSubmit}>Submit Payment</button>
+        <button type="button" onClick={handlePaymentSubmit}>
+          Submit Payment
+        </button>
       </form>
     </div>
   );

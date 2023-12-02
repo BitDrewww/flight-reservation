@@ -1,29 +1,32 @@
 // App.js
 import React from 'react';
 import { BrowserRouter as Router, Route, Routes, Link } from 'react-router-dom';
-import HomePage from './components/HomePage';
+import HomePage from './components/Homepage.js'; 
 import BrowseFlights from './components/BrowseFlights';
 import SelectFlights from './components/SelectFlights';
 import SeatSelection from './components/SeatSelection';
 import Payment from './components/Payment';
 import UserRegistration from './components/UserRegistration';
 import UserLogin from './components/UserLogin';
-import './styles.css'; // Import the CSS file
+import ModifyFlight from './components/ModifyFlight.js';
+import './Styles.css'; // Import the CSS file
 
 const NavBar = () => (
   <nav className="navbar">
     <div className="navbar-logo">
-      <img src="/logo.png" alt="Logo" className="logo" />
+      <img src="/logoNav.png" alt="Logo" className="logo" />
       <span className="navbar-text">Flight Reservation App</span>
     </div>
     <ul className="navbar-list">
       <li className="navbar-item"><Link to="/" className="navbar-link">Home</Link></li>
-      <li className="navbar-item"><Link to="/browse-flights" className="navbar-link">Browse Flights</Link></li>
-      <li className="navbar-item"><Link to="/register" className="navbar-link">Register</Link></li>
       <li className="navbar-item"><Link to="/login" className="navbar-link">Login</Link></li>
+      <li className="navbar-item"><Link to="/register" className="navbar-link">Register</Link></li>
+      <li className="navbar-item"><Link to="/browse-flights" className="navbar-link">Browse Flights</Link></li>
+      <li className="navbar-item"><Link to="/modify-flights" className="navbar-link">Modify Flights</Link></li>
     </ul>
   </nav>
 );
+
 
 const App = () => {
   // Placeholder state to manage selected flight and seat
@@ -77,6 +80,8 @@ const App = () => {
               }}
             />}
           />
+          <Route path="/modify-flights" element={<ModifyFlight />} />
+
         </Routes>
       </div>
     </Router>

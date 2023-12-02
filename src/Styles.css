@@ -1,4 +1,4 @@
-/* styles.css */
+/* Styles.css */
 .navbar {
     background-color: #333;
     padding: 10px 0;
@@ -44,9 +44,26 @@
   .navbar-text {
     color: white;
     font-weight: bold;
-    font-size: 20px;
+    font-size: 35px;
   }
 
-
+  .homepage-container {
+    text-align: center;
+  }
+  
+  .logo {
+    width: 150px; /* Adjust the width as needed */
+    height: 150px; /* Adjust the height as needed */
+  }
+  
+  .title {
+    font-size: 24px; /* Adjust the font size as needed */
+    margin-top: 10px; /* Adjust the margin-top as needed */
+  }
+  
+  .description {
+    font-size: 18px; /* Adjust the font size as needed */
+    margin-top: 10px; /* Adjust the margin-top as needed */
+  }
   
   
