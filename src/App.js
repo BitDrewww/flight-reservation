@@ -1,78 +1,86 @@
 // App.js
+import React from 'react';
+import { BrowserRouter as Router, Route, Routes, Link } from 'react-router-dom';
+import HomePage from './components/HomePage';
+import BrowseFlights from './components/BrowseFlights';
+import SelectFlights from './components/SelectFlights';
+import SeatSelection from './components/SeatSelection';
+import Payment from './components/Payment';
+import UserRegistration from './components/UserRegistration';
+import UserLogin from './components/UserLogin';
+import './Styles.css'; // Import the CSS file
 
-import React, { useState } from 'react';
-import './App.css';
-import FlightSearch from './components/FlightSearch';
-import FlightResults from './components/FlightResults';
-import Booking from './components/Booking';
-import NavBar from './components/NavBar/NavBar.js';
-import Homepage from './components/Homepage';
-import Register from './components/Register';
-import Login from './components/Login';
+const NavBar = () => (
+  <nav className="navbar">
+    <div className="navbar-logo">
+      <img src="/logo.png" alt="Logo" className="logo" />
+      <span className="navbar-text">Flight Reservation App</span>
+    </div>
+    <ul className="navbar-list">
+      <li className="navbar-item"><Link to="/" className="navbar-link">Home</Link></li>
+      <li className="navbar-item"><Link to="/browse-flights" className="navbar-link">Browse Flights</Link></li>
+      <li className="navbar-item"><Link to="/register" className="navbar-link">Register</Link></li>
+      <li className="navbar-item"><Link to="/login" className="navbar-link">Login</Link></li>
+    </ul>
+  </nav>
+);
 
-function App() {
-  const [selectedFlight, setSelectedFlight] = useState(null);
-  const [isFlightSearchVisible, setFlightSearchVisibility] = useState(false);
-  const [isHomepageVisible, setHomepageVisibility] = useState(true);
-  const [isRegisterVisible, setRegisterVisibility] = useState(false);
-  const [isLoginVisible, setLoginVisibility] = useState(false);
-
-  const onSelectFlight = (flight) => {
-    setSelectedFlight(flight);
-    setFlightSearchVisibility(false);
-    setHomepageVisibility(false);
-    setRegisterVisibility(false);
-    setLoginVisibility(false);
-  };
-
-  const toggleFlightSearch = () => {
-    setFlightSearchVisibility(!isFlightSearchVisible);
-    setHomepageVisibility(false);
-    setRegisterVisibility(false);
-    setLoginVisibility(false);
-  };
-
-  const toggleHomepage = () => {
-    setHomepageVisibility(!isHomepageVisible);
-    setFlightSearchVisibility(false);
-    setRegisterVisibility(false);
-    setLoginVisibility(false);
-  };
-
-  const toggleRegister = () => {
-    setRegisterVisibility(!isRegisterVisible);
-    setHomepageVisibility(false);
-    setFlightSearchVisibility(false);
-    setLoginVisibility(false);
-  };
-
-  const toggleLogin = () => {
-    setLoginVisibility(!isLoginVisible);
-    setHomepageVisibility(false);
-    setFlightSearchVisibility(false);
-    setRegisterVisibility(false);
-  };
+const App = () => {
+  // Placeholder state to manage selected flight and seat
+  const [selectedFlight, setSelectedFlight] = React.useState(null);
+  const [selectedSeat, setSelectedSeat] = React.useState(null);
 
   return (
-    <div className="App">
-      <NavBar
-        onFlightSearchClick={toggleFlightSearch}
-        onHomepageClick={toggleHomepage}
-        onRegisterClick={toggleRegister}
-        onLoginClick={toggleLogin}
-      />
-      <header className="App-header">
-        {/* You can add any header content here */}
-      </header>
-
-      {isFlightSearchVisible && <FlightSearch />}
-      {isHomepageVisible && <Homepage />}
-      {isRegisterVisible && <Register />}
-      {isLoginVisible && <Login />}
-      {selectedFlight && <Booking flight={selectedFlight} />}
-      {selectedFlight && <FlightResults onSelectFlight={onSelectFlight} />}
-    </div>
+    <Router>
+      <div>
+        <NavBar /> {/* Include the navigation bar */}
+        <Routes>
+          <Route path="/" element={<HomePage />} />
+          <Route
+            path="/browse-flights"
+            element={<BrowseFlights />}
+          />
+          <Route
+            path="/select-flights"
+            element={<SelectFlights onSelect={(flight) => setSelectedFlight(flight)} />}
+          />
+          <Route
+            path="/seat-selection"
+            element={<SeatSelection flightId={selectedFlight} onSeatSelect={(seat) => setSelectedSeat(seat)} />}
+          />
+          <Route
+            path="/payment"
+            element={<Payment
+              selectedFlight={selectedFlight}
+              selectedSeat={selectedSeat}
+              onPaymentSuccess={() => {
+                // Handle payment success, e.g., show a success message or redirect
+                console.log('Payment successful');
+              }}
+            />}
+          />
+          <Route
+            path="/register"
+            element={<UserRegistration
+              onRegistrationSuccess={() => {
+                // Handle successful registration, e.g., show a success message or redirect
+                console.log('Registration successful');
+              }}
+            />}
+          />
+          <Route
+            path="/login"
+            element={<UserLogin
+              onLoginSuccess={() => {
+                // Handle successful login, e.g., show a success message or redirect
+                console.log('Login successful');
+              }}
+            />}
+          />
+        </Routes>
+      </div>
+    </Router>
   );
-}
+};
 
 export default App;

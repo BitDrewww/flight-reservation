@@ -1,28 +1,35 @@
 import React, { useState } from 'react';
+import FlightResults from './FlightResults';
 
 function FlightSearch() {
   const [searchParams, setSearchParams] = useState({
     from: '',
     to: '',
-    date: ''
+    date: '',
   });
+
+  const [searchResults, setSearchResults] = useState([]);
+  const [selectedFlight, setSelectedFlight] = useState(null);
 
   const handleChange = (e) => {
     setSearchParams({ ...searchParams, [e.target.name]: e.target.value });
   };
 
+  const handleFlightSelection = (flight) => {
+    setSelectedFlight(flight);
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log('Searching for flights:', searchParams);
 
+    // Your API call logic here
     try {
-      // Update the URL to wherever your API is hosted, and the endpoint designed for searching flights
       const response = await fetch('http://localhost:3001/api/flights/search', {
-        method: 'POST', // Assuming the backend expects a POST request for searching flights
+        method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(searchParams), // Send the search parameters in the request body
+        body: JSON.stringify(searchParams),
       });
 
       if (!response.ok) {
@@ -30,10 +37,10 @@ function FlightSearch() {
       }
 
       const flights = await response.json();
-      // Do something with the flights data, e.g., set state, pass to another component, etc.
-      console.log(flights);
+      setSearchResults(flights);
     } catch (error) {
       console.error('Error fetching flights:', error);
+      setSearchResults([]);
     }
   };
 
@@ -41,6 +48,7 @@ function FlightSearch() {
     <div>
       <h2>Search Flights</h2>
       <form onSubmit={handleSubmit}>
+        {/* Your form inputs here */}
         <label>
           From:
           <input
@@ -75,6 +83,17 @@ function FlightSearch() {
         <br />
         <button type="submit">Search</button>
       </form>
+
+      {/* Display FlightResults with search results */}
+      <FlightResults flights={searchResults} onSelectFlight={handleFlightSelection} />
+
+      {/* Display selected flight details if a flight is selected */}
+      {selectedFlight && (
+        <div>
+          <h3>Selected Flight:</h3>
+          {/* Display details of the selected flight */}
+        </div>
+      )}
     </div>
   );
 }

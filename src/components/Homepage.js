@@ -1,15 +1,15 @@
-// Homepage.js
-
+// HomePage.js
 import React from 'react';
+import './HomePage.css'; // Import the CSS file
 
-const Homepage = () => {
-  return (
-    <div className="homepage">
-      <h1>Welcome to the Flight Reservation App!</h1>
-      <p>Explore our flights and book your next journey with ease.</p>
-      {/* Add more content as needed */}
+const HomePage = () => (
+  <div className="homepage-container">
+    <img src="/logo.png" alt="Logo" className="logo" />
+    <div className="title">Flight Reservation App</div>
+    <div className="description">
+      Welcome to our Flight Reservation App. Plan your journey with ease and convenience.
     </div>
-  );
-};
+  </div>
+);
 
-export default Homepage;
+export default HomePage;
