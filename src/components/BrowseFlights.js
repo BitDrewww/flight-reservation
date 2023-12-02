@@ -1,6 +1,7 @@
 // BrowseFlights.js
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 const BrowseFlights = () => {
   const [flights, setFlights] = useState([]);
@@ -9,10 +10,10 @@ const BrowseFlights = () => {
   const [date, setDate] = useState('');
   const [searchResults, setSearchResults] = useState([]);
   const [showResults, setShowResults] = useState(false);
+  const navigate = useNavigate();
 
   const handleSearch = () => {
-    // Fetch flights based on search criteria
-    axios.get(`/api/flights?from=${from}&to=${to}&date=${date}`)
+    axios.get('https://jsonplaceholder.typicode.com/posts?_limit=5')
       .then(response => {
         setSearchResults(response.data);
         setShowResults(true);
@@ -21,11 +22,17 @@ const BrowseFlights = () => {
   };
 
   useEffect(() => {
-    // Fetch all flights initially (or you can fetch based on default criteria)
-    axios.get('/api/flights')
+    axios.get('https://jsonplaceholder.typicode.com/posts?_limit=10')
       .then(response => setFlights(response.data))
       .catch(error => console.error(error));
   }, []);
+
+  const handleSelect = (flight) => {
+    // Customize this function based on your requirements
+    console.log(`Flight selected: ${flight.id} - ${flight.title}`);
+    // Navigate to the payment route with the selected flight ID
+    navigate(`/payment/${flight.id}`);
+  };
 
   return (
     <div>
@@ -65,7 +72,10 @@ const BrowseFlights = () => {
           <ul>
             {searchResults.length > 0 ? (
               searchResults.map(flight => (
-                <li key={flight.id}>{flight.name} - {flight.departure} to {flight.destination}</li>
+                <li key={flight.id}>
+                  {flight.title}
+                  <button onClick={() => handleSelect(flight)}>Select</button>
+                </li>
               ))
             ) : (
               <p>No flights match the search criteria.</p>
@@ -79,7 +89,10 @@ const BrowseFlights = () => {
           <h3>All Flights</h3>
           <ul>
             {flights.map(flight => (
-              <li key={flight.id}>{flight.name} - {flight.departure} to {flight.destination}</li>
+              <li key={flight.id}>
+                {flight.title}
+                <button onClick={() => handleSelect(flight)}>Select</button>
+              </li>
             ))}
           </ul>
         </div>

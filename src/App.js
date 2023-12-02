@@ -8,7 +8,7 @@ import SeatSelection from './components/SeatSelection';
 import Payment from './components/Payment';
 import UserRegistration from './components/UserRegistration';
 import UserLogin from './components/UserLogin';
-import './Styles.css'; // Import the CSS file
+import './styles.css'; // Import the CSS file
 
 const NavBar = () => (
   <nav className="navbar">
@@ -35,6 +35,10 @@ const App = () => {
       <div>
         <NavBar /> {/* Include the navigation bar */}
         <Routes>
+        <Route
+  path="/payment/:flightId"
+  element={<Payment selectedFlight={selectedFlight} onPaymentSuccess={() => console.log('Payment successful')} />}
+/>
           <Route path="/" element={<HomePage />} />
           <Route
             path="/browse-flights"
