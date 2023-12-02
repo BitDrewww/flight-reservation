@@ -2,7 +2,7 @@
 
 import React from 'react';
 
-const NavBar = ({ onFlightSearchClick, onHomepageClick, onRegisterClick, onLoginClick }) => {
+const NavBar = ({ onBrowseFlightsClick, onHomepageClick, onRegisterClick, onLoginClick }) => {
   return (
     <nav className="navbar">
       <a href="/" className="navbar-brand">
@@ -20,8 +20,8 @@ const NavBar = ({ onFlightSearchClick, onHomepageClick, onRegisterClick, onLogin
           </button>
         </li>
         <li className="nav-item">
-          <button onClick={onFlightSearchClick} className="nav-link">
-            Flight Search
+          <button onClick={onBrowseFlightsClick} className="nav-link">
+            Browse Flights
           </button>
         </li>
         <li className="nav-item">

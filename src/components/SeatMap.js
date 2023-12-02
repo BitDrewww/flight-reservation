@@ -8,6 +8,7 @@ const mockSeats = [
 ];
 
 function SeatMap({ onSeatSelect }) {
+  
   const [selectedSeat, setSelectedSeat] = useState(null);
 
   const handleSeatClick = (seat) => {

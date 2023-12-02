@@ -2,39 +2,43 @@
 
 import React, { useState } from 'react';
 import './App.css';
-import FlightSearch from './components/FlightSearch';
+import BrowseFlights from './components/BrowseFlights.js';
 import FlightResults from './components/FlightResults';
 import Booking from './components/Booking';
 import NavBar from './components/NavBar/NavBar.js';
 import Homepage from './components/Homepage';
 import Register from './components/Register';
 import Login from './components/Login';
+import SeatMap from './components/SeatMap';
 
 function App() {
   const [selectedFlight, setSelectedFlight] = useState(null);
-  const [isFlightSearchVisible, setFlightSearchVisibility] = useState(false);
-  const [isHomepageVisible, setHomepageVisibility] = useState(true);
+  const [isBrowseFlightsVisible, setBrowseFlightsVisibility] = useState(true); // Set to true initially
+  const [isHomepageVisible, setHomepageVisibility] = useState(false);
   const [isRegisterVisible, setRegisterVisibility] = useState(false);
   const [isLoginVisible, setLoginVisibility] = useState(false);
+  const [isSeatMapVisible, setSeatMapVisibility] = useState(false);
 
   const onSelectFlight = (flight) => {
     setSelectedFlight(flight);
-    setFlightSearchVisibility(false);
+    setBrowseFlightsVisibility(false);
     setHomepageVisibility(false);
     setRegisterVisibility(false);
     setLoginVisibility(false);
+    setSeatMapVisibility(true); // Show SeatMap after flight selection
   };
 
-  const toggleFlightSearch = () => {
-    setFlightSearchVisibility(!isFlightSearchVisible);
+  const toggleBrowseFlights = () => {
+    setBrowseFlightsVisibility(!isBrowseFlightsVisible);
     setHomepageVisibility(false);
     setRegisterVisibility(false);
     setLoginVisibility(false);
+    setSeatMapVisibility(false); // Hide SeatMap when BrowseFlights is toggled
   };
 
   const toggleHomepage = () => {
     setHomepageVisibility(!isHomepageVisible);
-    setFlightSearchVisibility(false);
+    setBrowseFlightsVisibility(false);
     setRegisterVisibility(false);
     setLoginVisibility(false);
   };
@@ -42,21 +46,21 @@ function App() {
   const toggleRegister = () => {
     setRegisterVisibility(!isRegisterVisible);
     setHomepageVisibility(false);
-    setFlightSearchVisibility(false);
+    setBrowseFlightsVisibility(false);
     setLoginVisibility(false);
   };
 
   const toggleLogin = () => {
     setLoginVisibility(!isLoginVisible);
     setHomepageVisibility(false);
-    setFlightSearchVisibility(false);
+    setBrowseFlightsVisibility(false);
     setRegisterVisibility(false);
   };
 
   return (
     <div className="App">
       <NavBar
-        onFlightSearchClick={toggleFlightSearch}
+        onBrowseFlightsClick={toggleBrowseFlights}
         onHomepageClick={toggleHomepage}
         onRegisterClick={toggleRegister}
         onLoginClick={toggleLogin}
@@ -65,10 +69,11 @@ function App() {
         {/* You can add any header content here */}
       </header>
 
-      {isFlightSearchVisible && <FlightSearch />}
+      {isBrowseFlightsVisible && <BrowseFlights onSelectFlight={onSelectFlight} />}
       {isHomepageVisible && <Homepage />}
       {isRegisterVisible && <Register />}
       {isLoginVisible && <Login />}
+      {selectedFlight && isSeatMapVisible && <SeatMap onSeatSelect={(seat) => console.log(`Selected seat: ${seat}`)} />}
       {selectedFlight && <Booking flight={selectedFlight} />}
       {selectedFlight && <FlightResults onSelectFlight={onSelectFlight} />}
     </div>

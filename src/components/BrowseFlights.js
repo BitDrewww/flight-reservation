@@ -6,6 +6,9 @@ function FlightSearch() {
     to: '',
     date: ''
   });
+  const [loading, setLoading] = useState(false);
+  const [flights, setFlights] = useState(null);
+  const [error, setError] = useState(null);
 
   const handleChange = (e) => {
     setSearchParams({ ...searchParams, [e.target.name]: e.target.value });
@@ -13,33 +16,35 @@ function FlightSearch() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log('Searching for flights:', searchParams);
+    setLoading(true);
 
     try {
-      // Update the URL to wherever your API is hosted, and the endpoint designed for searching flights
       const response = await fetch('http://localhost:3001/api/flights/search', {
-        method: 'POST', // Assuming the backend expects a POST request for searching flights
+        method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(searchParams), // Send the search parameters in the request body
+        body: JSON.stringify(searchParams),
       });
 
       if (!response.ok) {
         throw new Error(`HTTP error! Status: ${response.status}`);
       }
 
-      const flights = await response.json();
-      // Do something with the flights data, e.g., set state, pass to another component, etc.
-      console.log(flights);
+      const fetchedFlights = await response.json();
+      setFlights(fetchedFlights);
+      setError(null);
     } catch (error) {
-      console.error('Error fetching flights:', error);
+      setFlights(null);
+      setError(error.message || 'Error fetching flights');
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
     <div>
-      <h2>Search Flights</h2>
+      <h2>Browse Flights</h2>
       <form onSubmit={handleSubmit}>
         <label>
           From:
@@ -73,8 +78,20 @@ function FlightSearch() {
           />
         </label>
         <br />
-        <button type="submit">Search</button>
+        <button type="submit" disabled={loading}>
+          {loading ? 'Searching...' : 'Search'}
+        </button>
       </form>
+
+      {loading && <p>Loading...</p>}
+      {error && <p style={{ color: 'red' }}>{error}</p>}
+      {flights && (
+        <div>
+          <h3>Search Results</h3>
+          {/* Display your fetched flights here */}
+          <pre>{JSON.stringify(flights, null, 2)}</pre>
+        </div>
+      )}
     </div>
   );
 }
