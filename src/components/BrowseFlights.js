@@ -31,40 +31,43 @@ const BrowseFlights = () => {
     // Customize this function based on your requirements
     console.log(`Flight selected: ${flight.id} - ${flight.title}`);
     // Navigate to the payment route with the selected flight ID
-    navigate(`/payment/${flight.id}`);
+    navigate(`/seat-selection/${flight.id}`);
+    // navigate(`/payment/${flight.id}`);
   };
 
   return (
     <div>
-      <h2>Browse Flights</h2>
-      <div>
+      <h2 style={{ textAlign: 'left' }}>Browse Flights</h2>
+      <form onSubmit={handleSearch} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
         <label htmlFor="from">From:</label>
         <input
           type="text"
           id="from"
+          name="from"
           value={from}
           onChange={(e) => setFrom(e.target.value)}
+          style={{ marginBottom: '10px' }} // Added margin at the bottom
         />
-      </div>
-      <div>
         <label htmlFor="to">To:</label>
         <input
           type="text"
           id="to"
+          name="to"
           value={to}
           onChange={(e) => setTo(e.target.value)}
+          style={{ marginBottom: '10px' }} // Added margin at the bottom
         />
-      </div>
-      <div>
         <label htmlFor="date">Date:</label>
         <input
           type="date"
           id="date"
+          name="date"
           value={date}
           onChange={(e) => setDate(e.target.value)}
+          style={{ marginBottom: '10px' }} // Added margin at the bottom
         />
-      </div>
-      <button onClick={handleSearch}>Search Flights</button>
+        <button type="submit" style={{ marginTop: '10px', marginBottom: '20px' }}>Search Flights</button> {/* Added margin at the top and bottom */}
+      </form>
 
       {showResults && (
         <div>
@@ -74,7 +77,7 @@ const BrowseFlights = () => {
               searchResults.map(flight => (
                 <li key={flight.id}>
                   {flight.title}
-                  <button onClick={() => handleSelect(flight)}>Select</button>
+                  <button onClick={() => handleSelect(flight)} style={{ marginLeft: '10px' }}>Select</button>
                 </li>
               ))
             ) : (
@@ -86,12 +89,12 @@ const BrowseFlights = () => {
 
       {!showResults && (
         <div>
-          <h3>All Flights</h3>
+          <h3>Flight Results</h3>
           <ul>
             {flights.map(flight => (
               <li key={flight.id}>
-                {flight.title}
-                <button onClick={() => handleSelect(flight)}>Select</button>
+                {"Sample Flight"}
+                <button onClick={() => handleSelect(flight)} style={{ marginLeft: '10px' }}>Select</button>
               </li>
             ))}
           </ul>

@@ -35,10 +35,6 @@ const App = () => {
       <div>
         <NavBar /> {/* Include the navigation bar */}
         <Routes>
-        <Route
-  path="/payment/:flightId"
-  element={<Payment selectedFlight={selectedFlight} onPaymentSuccess={() => console.log('Payment successful')} />}
-/>
           <Route path="/" element={<HomePage />} />
           <Route
             path="/browse-flights"
@@ -49,8 +45,8 @@ const App = () => {
             element={<SelectFlights onSelect={(flight) => setSelectedFlight(flight)} />}
           />
           <Route
-            path="/seat-selection"
-            element={<SeatSelection flightId={selectedFlight} onSeatSelect={(seat) => setSelectedSeat(seat)} />}
+            path="/seat-selection/:flightId"
+            element={<SeatSelection onSeatSelect={(seat) => setSelectedSeat(seat)} onNext={() => console.log('Navigate to Payment')} />}
           />
           <Route
             path="/payment"
