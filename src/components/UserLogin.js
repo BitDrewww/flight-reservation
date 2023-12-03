@@ -20,7 +20,7 @@ const UserLogin = ({ onLoginSuccess }) => {
       setUser(response.data);
       navigate('/modify-flights');
     } catch (error) {
-      console.error('Login error:', error);
+      alert('Login error');
     }
   };
 

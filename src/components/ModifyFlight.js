@@ -20,7 +20,7 @@ const ModifyFlight = () => {
   const handleCancelFlight = async (flightId) => {
     try {
       console.log(`Canceling flight with ID: ${flightId}`);
-      await axios.delete(`http://localhost:3001/api/flights/cancel/${flightId}`)
+      await axios.delete(`http://localhost:3001/api/flights/reservation/${flightId}`)
       await fetchBookedFlights();
     } catch (error) {
       console.error(error);
@@ -37,7 +37,7 @@ const ModifyFlight = () => {
       <ul>
         {bookedFlights.map((flight) => (
           <li key={flight.id}>
-            <p>Date: {new Date(flight.flightDate).toLocaleDateString()}</p>
+            <p>Date: {new Date(flight.flightDt).toLocaleString()}</p>
             <p>Departure: {flight.departure}</p>
             <p>Destination: {flight.arrival}</p>
             <p>Price: {flight.price}</p>

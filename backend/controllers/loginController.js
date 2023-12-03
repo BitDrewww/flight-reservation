@@ -2,7 +2,6 @@
 const db = require('../database/db');
 
 registerUser = (req, res) => {
-  // Logic to register a user
   db.query('INSERT into Users (adminFlag, email, pass) VALUES (?, ?, ?)', [false, req.body.email, req.body.password], (error, results) => {
     if (error) {
       res.status(500).send({

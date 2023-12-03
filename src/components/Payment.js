@@ -6,7 +6,7 @@ import { AuthContext } from './auth/AuthContext';
 
 const Payment = (props) => {
   const flightDetails = props.selectedFlight;
-  const subtotal = ((Math.random() * (1000.00 - 500.00)) + 500.00);
+  const subtotal = flightDetails.price;
   const navigate = useNavigate();
   const { user } = useContext(AuthContext);
 
@@ -29,7 +29,7 @@ const Payment = (props) => {
       {flightDetails && (
         <div>
           <h3>Flight Details</h3>
-          <p>Date: {new Date(flightDetails.flightDate).toLocaleDateString()}</p>
+          <p>Date: {new Date(flightDetails.flightDt).toLocaleString()}</p>
           <p>Departure: {flightDetails.departure}</p>
           <p>Destination: {flightDetails.arrival}</p>
         </div>

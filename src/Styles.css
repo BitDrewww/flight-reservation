@@ -8,6 +8,7 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
+    max-width: 1000px;
 }
   
   .navbar-list {
@@ -66,5 +67,14 @@
     font-size: 18px; /* Adjust the font size as needed */
     margin-top: 10px; /* Adjust the margin-top as needed */
   }
+
+table, th, td {
+  border: 1px solid;
+}
+
+table {
+  border-collapse: collapse;
+  width: 100%;
+}
   
   

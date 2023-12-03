@@ -11,6 +11,7 @@ import ModifyFlight from './components/ModifyFlight.js';
 import './Styles.css'; // Import the CSS file
 import { AuthContextProvider } from './components/auth/AuthContextProvider.jsx';
 import { AuthContext } from './components/auth/AuthContext.jsx';
+import { AdminFlights } from './components/AdminFlights.jsx';
 
 const NavBar = () => {
   const { user } = useContext(AuthContext);
@@ -27,9 +28,12 @@ const NavBar = () => {
       <li className="navbar-item"><Link to="/" className="navbar-link">Home</Link></li>
       <li className="navbar-item"><Link to="/browse-flights" className="navbar-link">Browse Flights</Link></li>
       <li className="navbar-item"><Link to="/modify-flights" className="navbar-link">Modify Flights</Link></li>
+      {user && user.adminflag !== 0 && (
+        <li className="navbar-item"><Link to="/admin" className="navbar-link">Admin</Link></li>
+      )}
     </ul>
     {user ? (
-      <div style={{color: "#fff"}}>{user.email}</div>
+      <div style={{color: "#fff", display: 'flex', flexDirection: 'column', alignItems: 'flex-end'}}><div>{user.email}</div><div>{user.adminflag !== 0 ? '(Admin)' : null}</div></div>
     ): (
     <div className="navbar-list">
       <li className="navbar-item"><Link to="/login" className="navbar-link">Login</Link></li>
@@ -53,6 +57,7 @@ const App = () => {
       <Router>
         <div>
           <NavBar /> {/* Include the navigation bar */}
+          <div style={{ padding: '10px' }}>
           <Routes>
             <Route path="/" element={<HomePage />} />
             <Route
@@ -88,7 +93,10 @@ const App = () => {
               element={<UserLogin />}
             />
             <Route path="/modify-flights" element={<ModifyFlight />} />
+            <Route path="/admin" element={<AdminFlights />} />
           </Routes>
+
+          </div>
         </div>
       </Router>
     </AuthContextProvider>
