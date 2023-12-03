@@ -1,41 +1,27 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import axios from 'axios';
+import { AuthContext } from './auth/AuthContext';
 
 const ModifyFlight = () => {
   const [bookedFlights, setBookedFlights] = useState([]);
-
-  // Dummy data for testing
-  const dummyFlights = [
-    { id: 1, name: 'Dummy Flight 1', departure: 'City A', destination: 'City B', price: '$500' },
-    { id: 2, name: 'Dummy Flight 2', departure: 'City C', destination: 'City D', price: '$500'  },
-    // Add more dummy flights as needed
-  ];
-
-  const fetchBookedFlights = async () => {
-    try {
-      // For testing purposes, use the dummyFlights data
-      setBookedFlights(dummyFlights);
-
-      // Uncomment the following line when testing with real API data
-      // const response = await axios.get('/api/booked-flights');
-      // setBookedFlights(response.data);
-    } catch (error) {
-      console.error(error);
-    }
-  };
+  const { user } = useContext(AuthContext);
 
   useEffect(() => {
     fetchBookedFlights();
   }, []);
 
+  const fetchBookedFlights = async () => {
+    if (user) {
+      const res = await axios.get(`http://localhost:3001/api/flights/my-flights?userEmail=${user.email}`);
+      setBookedFlights(res.data);
+    }
+  };
+
   const handleCancelFlight = async (flightId) => {
     try {
-      // Assuming there is an API endpoint to cancel a booked flight
-      // For testing purposes, log a message
       console.log(`Canceling flight with ID: ${flightId}`);
-
-      // Uncomment the following line when testing with real API data
-      // await axios.post(`/api/cancel-flight/${flightId}`);
+      await axios.delete(`http://localhost:3001/api/flights/cancel/${flightId}`)
+      await fetchBookedFlights();
     } catch (error) {
       console.error(error);
     }
@@ -44,19 +30,30 @@ const ModifyFlight = () => {
   return (
     <div>
       <h2>Modify Flights</h2>
-      <h3>List of Booked Flights:</h3>
+      {user ? (
+        <div>
+        <h3>List of Booked Flights:</h3>
+        {bookedFlights.length > 0 ? (
       <ul>
         {bookedFlights.map((flight) => (
           <li key={flight.id}>
-            <p>Name: {flight.name}</p>
+            <p>Date: {new Date(flight.flightDate).toLocaleDateString()}</p>
             <p>Departure: {flight.departure}</p>
-            <p>Destination: {flight.destination}</p>
+            <p>Destination: {flight.arrival}</p>
             <p>Price: {flight.price}</p>
             {/* Add more flight details as needed */}
-            <button onClick={() => handleCancelFlight(flight.id)}>Cancel</button>
+            <button onClick={() => handleCancelFlight(flight.reservation_id)}>Cancel</button>
           </li>
         ))}
       </ul>
+
+        ) : (
+          <p>No flights booked.</p>
+        )}
+      </div>
+      ) : (
+        <p>Please login to view your booked flights.</p>
+      )}
     </div>
   );
 };

@@ -1,50 +1,40 @@
 // loginController.js
-const jwt = require('jsonwebtoken');
-const bcrypt = require('bcrypt');
-const User = require('../models/User'); // Import your user model
+const db = require('../database/db');
 
-const loginController = {
-  // Function to authenticate user and send token
-  async login(req, res) {
-    try {
-      const { email, password } = req.body;
-
-      // Find user by email
-      const user = await User.findOne({ email });
-      if (!user) {
-        return res.status(401).json({ message: "Email doesn't exist" });
-      }
-
-      // Compare password
-      const isMatch = await bcrypt.compare(password, user.password);
-      if (!isMatch) {
-        return res.status(401).json({ message: 'Password incorrect' });
-      }
-
-      // User matched, create JWT Payload
-      const payload = {
-        id: user.id,
-        email: user.email
-      };
-
-      // Sign token
-      jwt.sign(
-        payload,
-        process.env.JWT_SECRET, // Make sure to set this in your .env
-        { expiresIn: 3600 },
-        (err, token) => {
-          if (err) throw err;
-          res.json({
-            success: true,
-            token: 'Bearer ' + token
-          });
-        }
-      );
-    } catch (err) {
-      console.error(err.message);
-      res.status(500).send('Server error');
+registerUser = (req, res) => {
+  // Logic to register a user
+  db.query('INSERT into Users (adminFlag, email, pass) VALUES (?, ?, ?)', [false, req.body.email, req.body.password], (error, results) => {
+    if (error) {
+      res.status(500).send({
+        message: 'Failed to register user',
+        error: error.message
+      });
+    } else {
+      res.status(200).json(results);
     }
-  }
+  });
 };
 
-module.exports = loginController;
+login = (req, res) => {
+  console.log(req.body.email);
+  db.query('SELECT * FROM Users WHERE email = ? LIMIT 1', [req.body.email], (error, results) => {
+    if (error) {
+      res.status(500).send({
+        message: 'Failed to login',
+        error: error.message
+      });
+    } else {
+      console.log(results);
+      console.log(req.body.password);
+      if (results && results[0].pass !== req.body.password) {
+        res.status(401).send({
+          message: 'Unauthorized'
+        });
+        return;
+      }
+      res.status(200).json(results[0]);
+    }
+  });
+}
+
+module.exports = {registerUser, login };

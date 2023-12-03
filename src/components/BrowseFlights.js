@@ -80,21 +80,6 @@ const BrowseFlights = (props) => {
           </ul>
         </div>
       )}
-
-      {!showResults && (
-        <div>
-          <h3>Flight Results</h3>
-          <ul>
-            {flights.map(flight => (
-              <li key={flight.id}>
-                <h3 style={{ textAlign: 'Center' }}></h3>
-                {flight.data}
-                <button onClick={() => handleSelect(flight)} style={{ marginLeft: '10px' }}>Select</button>
-              </li>
-            ))}
-          </ul>
-        </div>
-      )}
     </div>
   );
 };

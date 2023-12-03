@@ -32,22 +32,38 @@ searchFlight = (req, res) => {
   });
 };
 
-
-// cancel flight notification
-const { sendCancellationEmail } = require('../services/emailService');
-
-const cancelFlight = async (req, res) => {
+cancelReservation = async (req, res) => {
   try {
-    const flightId = req.params.id;
-    // ...cancellation logic...
-
-    // After successful cancellation, send an email
-    await sendCancellationEmail(req.user.email, flightId);
-
-    res.status(200).json({ message: 'Flight cancelled successfully, email sent' });
+    const reservationId = req.params.reservationId;
+    db.query('DELETE from Reservation WHERE reservation_id = ?', [reservationId], (error, results) => {
+      if (error) {
+        console.log("error occured"+ error)
+        res.status(500).send({
+          message: `Error retrieving flight`,
+          error: error.message
+        });
+      } else {
+        res.status(200).json({status:"ok"});
+      }
+    });
   } catch (error) {
     res.status(500).json({ message: 'Error cancelling flight' });
   }
 };
 
-module.exports = { findAllFlight, searchFlight, cancelFlight };
+getMyFlights = (req, res) => {
+  const email = req.query.userEmail;
+  db.query('SELECT * FROM Flights JOIN Reservation ON Flights.id = Reservation.flight_id AND Reservation.email = ?', [email], (error, results) => {
+    if (error) {
+      console.log("error occured"+ error)
+      res.status(500).send({
+        message: `Error retrieving flight`,
+        error: error.message
+      });
+    } else {
+      res.status(200).json(results);
+    }
+  });
+}
+
+module.exports = { findAllFlight, searchFlight, cancelReservation, getMyFlights };

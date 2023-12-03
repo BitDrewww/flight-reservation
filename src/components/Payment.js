@@ -1,17 +1,25 @@
 // Payment.js
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import { AuthContext } from './auth/AuthContext';
+
 const Payment = (props) => {
-  console.log(props)
   const flightDetails = props.selectedFlight;
   const subtotal = ((Math.random() * (1000.00 - 500.00)) + 500.00);
   const navigate = useNavigate();
+  const { user } = useContext(AuthContext);
+
   const handlePayment = () => {
-    axios.put(`http://localhost:3001/api/flights/reserve/${flightDetails.id}/${props.selectedSeat}/${subtotal}`)
+    axios.put(`http://localhost:3001/api/flights/reserve`, {
+      flightId: flightDetails.id,
+      userEmail: user.email,
+      seatId: props.selectedSeat,
+      price: subtotal,
+    })
     .then(() => 
-    {alert("Payment Successful, Flight Reserved, Thank you for choosing us!")
-    navigate(`/`);})
+    {alert("Booked successfully")
+    navigate(`/modify-flights`);})
     
   };
 

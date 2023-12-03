@@ -3,6 +3,7 @@ require('dotenv').config();
 
 const express = require('express');
 const cors = require('cors');
+const session = require('express-session');
 
 // Create an instance of express
 const app = express();
@@ -10,8 +11,15 @@ const app = express();
 // Middleware 
 app.use(cors()); // Use cors middleware for enabling cross-origin requests
 app.use(express.json()); // for parsing application/json
+app.use(session({
+  secret: 'secret-key',
+  resave: false,
+  saveUninitialized: true,
+  cookie: { secure: false }
+}));
 
 // Routes 
+const authRoutes = require('./routes/auth');
 const flightRoutes = require('./routes/flights');
 // other route imports here...
 
@@ -20,8 +28,13 @@ app.get('/', (req, res) => {
   res.json({ message: 'Welcome to the Flight Reservation System Backend' });
 });
 
+app.post('/login', (req, res) => {
+
+})
+
 //Use routes
 app.use('/api/flights', flightRoutes);
+app.use('/api/auth', authRoutes);
 // use other routes...
 
 // Start the server
