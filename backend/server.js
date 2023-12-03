@@ -31,23 +31,23 @@ app.listen(PORT, () => {
 });
 
 // cancel flight notification
-const flightRoutes = require('./src/routes/flightRoutes');
+// const flightRoutes = require('./src/routes/flightRoutes');
 
 // ...other middleware...
 
 // Use the routes
-app.use('/api/flights', flightRoutes);
+// app.use('/api/flights', flightRoutes);
 
 // ...rest of server setup...
 
 // user login registration
-const express = require('express');
-const authRoutes = require('./routes/authRoutes'); // Adjust the path as per your file structure
+// const express = require('express');
+// const authRoutes = require('./routes/authRoutes'); // Adjust the path as per your file structure
 
 app.use(express.json());
-app.use('/api', authRoutes); // Use the auth routes under the '/api' prefix
+// app.use('/api', authRoutes); // Use the auth routes under the '/api' prefix
 
 
-app.use('/api/auth', authRoutes); // Mount the auth routes on the /api/auth path
+// app.use('/api/auth', authRoutes); // Mount the auth routes on the /api/auth path
 
 // ... rest of your server setup ...

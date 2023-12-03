@@ -1,7 +1,7 @@
 // Import the database connection
 const db = require('../database/db');
 
-exports.findAll = (req, res) => {
+findAllFlight = (req, res) => {
   // Logic to return all flights
   db.query('SELECT * FROM flights', (error, results) => {
     if (error) {
@@ -15,7 +15,7 @@ exports.findAll = (req, res) => {
   });
 };
 
-exports.findOne = (req, res) => {
+findOneFlight = (req, res) => {
   // Logic to return a single flight by ID
   const id = req.params.id;
   db.query('SELECT * FROM flights WHERE id = ?', [id], (error, results) => {
@@ -30,9 +30,10 @@ exports.findOne = (req, res) => {
   });
 };
 
-exports.create = (req, res) => {
+createFlight = (req, res) => {
   // Logic to create a new flight
   const newFlight = req.body; // Assuming you have middleware to parse the body
+  console.log(newFlight);
   db.query('INSERT INTO flights SET ?', newFlight, (error, results) => {
     if (error) {
       res.status(500).send({
@@ -45,7 +46,7 @@ exports.create = (req, res) => {
   });
 };
 
-exports.update = (req, res) => {
+updateFlight = (req, res) => {
   // Logic to update a flight by ID
   const id = req.params.id;
   const flightUpdates = req.body;
@@ -65,7 +66,7 @@ exports.update = (req, res) => {
   );
 };
 
-exports.delete = (req, res) => {
+deleteFlight = (req, res) => {
   // Logic to delete a flight by ID
   const id = req.params.id;
   db.query('DELETE FROM flights WHERE id = ?', [id], (error, results) => {
@@ -97,4 +98,4 @@ const cancelFlight = async (req, res) => {
   }
 };
 
-module.exports = { cancelFlight };
+module.exports = { findAllFlight, findOneFlight, createFlight, updateFlight, deleteFlight, cancelFlight };
