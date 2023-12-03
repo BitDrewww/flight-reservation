@@ -3,7 +3,6 @@
 import React from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import BrowseFlights from './components/BrowseFlights'; // Adjust the import path
-import SelectFlights from './components/SelectFlights'; // Adjust the import path
 import SeatSelection from './components/SeatSelection'; // Adjust the import path
 import Payment from './components/Payment'; // Adjust the import path
 import UserRegistration from './components/UserRegistration'; // Adjust the import path
@@ -17,13 +16,7 @@ function App() {
   const [isRegisterVisible, setRegisterVisibility] = useState(false);
   const [isLoginVisible, setLoginVisibility] = useState(false);
 
-  const onSelectFlight = (flight) => {
-    setSelectedFlight(flight);
-    setFlightSearchVisibility(false);
-    setHomepageVisibility(false);
-    setRegisterVisibility(false);
-    setLoginVisibility(false);
-  };
+
 
   const toggleFlightSearch = () => {
     setFlightSearchVisibility(!isFlightSearchVisible);

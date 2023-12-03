@@ -8,9 +8,8 @@ const MakePayment = ({ selectedFlight }) => {
   const [cvv, setCvv] = useState('');
 
   const handlePayment = () => {
-    // Perform payment processing logic here
-    // You can send payment details and selectedFlight to the server, for example
-    console.log('Payment processed successfully:', { cardNumber, expiryDate, cvv, selectedFlight });
+    axios.put(`http://localhost:3001/api/flights/${date}/${from}/${to}`)
+    .then(alert("Payment Successful, Flight Reserved, Thank you for choosing us!"))
   };
 
   return (

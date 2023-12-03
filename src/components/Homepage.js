@@ -1,4 +1,4 @@
-// HomePage.js
+// Homepage.js
 import React from 'react';
 import './Homepage.css'; // Import the CSS file
 

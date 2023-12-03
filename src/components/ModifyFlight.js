@@ -6,8 +6,8 @@ const ModifyFlight = () => {
 
   // Dummy data for testing
   const dummyFlights = [
-    { id: 1, name: 'Dummy Flight 1', departure: 'City A', destination: 'City B' },
-    { id: 2, name: 'Dummy Flight 2', departure: 'City C', destination: 'City D' },
+    { id: 1, name: 'Dummy Flight 1', departure: 'City A', destination: 'City B', price: '$500' },
+    { id: 2, name: 'Dummy Flight 2', departure: 'City C', destination: 'City D', price: '$500'  },
     // Add more dummy flights as needed
   ];
 
@@ -44,13 +44,14 @@ const ModifyFlight = () => {
   return (
     <div>
       <h2>Modify Flights</h2>
-      <p>List of Booked Flights:</p>
+      <h3>List of Booked Flights:</h3>
       <ul>
         {bookedFlights.map((flight) => (
           <li key={flight.id}>
             <p>Name: {flight.name}</p>
             <p>Departure: {flight.departure}</p>
             <p>Destination: {flight.destination}</p>
+            <p>Price: {flight.price}</p>
             {/* Add more flight details as needed */}
             <button onClick={() => handleCancelFlight(flight.id)}>Cancel</button>
           </li>

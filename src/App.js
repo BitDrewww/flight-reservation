@@ -3,7 +3,6 @@ import React from 'react';
 import { BrowserRouter as Router, Route, Routes, Link } from 'react-router-dom';
 import HomePage from './components/Homepage.js'; 
 import BrowseFlights from './components/BrowseFlights';
-import SelectFlights from './components/SelectFlights';
 import SeatSelection from './components/SeatSelection';
 import Payment from './components/Payment';
 import UserRegistration from './components/UserRegistration';
@@ -27,7 +26,6 @@ const NavBar = () => (
   </nav>
 );
 
-
 const App = () => {
   // Placeholder state to manage selected flight and seat
   const [selectedFlight, setSelectedFlight] = React.useState(null);
@@ -41,11 +39,7 @@ const App = () => {
           <Route path="/" element={<HomePage />} />
           <Route
             path="/browse-flights"
-            element={<BrowseFlights />}
-          />
-          <Route
-            path="/select-flights"
-            element={<SelectFlights onSelect={(flight) => setSelectedFlight(flight)} />}
+            element={<BrowseFlights onFlightSelect ={(flight) => setSelectedFlight(flight)}/>}
           />
           <Route
             path="/seat-selection/:flightId"

@@ -3,7 +3,7 @@ const db = require('../database/db');
 
 findAllFlight = (req, res) => {
   // Logic to return all flights
-  db.query('SELECT * FROM flights', (error, results) => {
+  db.query('SELECT * FROM Flights', (error, results) => {
     if (error) {
       res.status(500).send({
         message: 'Error retrieving flights',
@@ -15,71 +15,23 @@ findAllFlight = (req, res) => {
   });
 };
 
-findOneFlight = (req, res) => {
-  // Logic to return a single flight by ID
-  const id = req.params.id;
-  db.query('SELECT * FROM flights WHERE id = ?', [id], (error, results) => {
+searchFlight = (req, res) => {
+  const date = req.params.date;
+  const departure = req.params.departure;
+  const arrival = req.params.arrival;
+  db.query('SELECT * FROM Flights WHERE flightDate = ? and departure = ? and arrival = ?', [date, departure, arrival], (error, results) => {
     if (error) {
+      console.log("error occured"+ error)
       res.status(500).send({
-        message: `Error retrieving flight with id ${id}`,
+        message: `Error retrieving flight`,
         error: error.message
       });
     } else {
-      res.status(200).json(results[0]);
+      res.status(200).json(results);
     }
   });
 };
 
-createFlight = (req, res) => {
-  // Logic to create a new flight
-  const newFlight = req.body; // Assuming you have middleware to parse the body
-  console.log(newFlight);
-  db.query('INSERT INTO flights SET ?', newFlight, (error, results) => {
-    if (error) {
-      res.status(500).send({
-        message: 'Error creating new flight',
-        error: error.message
-      });
-    } else {
-      res.status(201).json({ id: results.insertId, ...newFlight });
-    }
-  });
-};
-
-updateFlight = (req, res) => {
-  // Logic to update a flight by ID
-  const id = req.params.id;
-  const flightUpdates = req.body;
-  db.query(
-    'UPDATE flights SET ? WHERE id = ?',
-    [flightUpdates, id],
-    (error, results) => {
-      if (error) {
-        res.status(500).send({
-          message: `Error updating flight with id ${id}`,
-          error: error.message
-        });
-      } else {
-        res.status(200).json({ id: id, ...flightUpdates });
-      }
-    }
-  );
-};
-
-deleteFlight = (req, res) => {
-  // Logic to delete a flight by ID
-  const id = req.params.id;
-  db.query('DELETE FROM flights WHERE id = ?', [id], (error, results) => {
-    if (error) {
-      res.status(500).send({
-        message: `Error deleting flight with id ${id}`,
-        error: error.message
-      });
-    } else {
-      res.status(200).json({ message: `Flight with id ${id} successfully deleted` });
-    }
-  });
-};
 
 // cancel flight notification
 const { sendCancellationEmail } = require('../services/emailService');
@@ -98,4 +50,4 @@ const cancelFlight = async (req, res) => {
   }
 };
 
-module.exports = { findAllFlight, findOneFlight, createFlight, updateFlight, deleteFlight, cancelFlight };
+module.exports = { findAllFlight, searchFlight, cancelFlight };
