@@ -11,14 +11,14 @@ const app = express();
 app.use(cors()); // Use cors middleware for enabling cross-origin requests
 app.use(express.json()); // for parsing application/json
 
-// Routes 
-const flightRoutes = require('./routes/flights');
-// other route imports here...
-
 // Define a route for the root path
 app.get('/', (req, res) => {
   res.json({ message: 'Welcome to the Flight Reservation System Backend' });
 });
+
+// Routes 
+const flightRoutes = require('./routes/flights');
+// other route imports here...
 
 //Use routes
 app.use('/api/flights', flightRoutes);
