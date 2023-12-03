@@ -1,12 +1,12 @@
 /* Styles.css */
 .navbar {
     background-color: #333;
-    padding: 10px 0;
+    padding: 80px 0;
   }
   
   .navbar-list {
     list-style: none;
-    margin: 0;
+    margin-top: 50;
     padding: 0;
     display: flex;
   }
@@ -44,21 +44,16 @@
   .navbar-text {
     color: white;
     font-weight: bold;
-    font-size: 35px;
+    font-size: 60px;
   }
 
   .homepage-container {
     text-align: center;
   }
   
-  .logo {
-    width: 150px; /* Adjust the width as needed */
-    height: 150px; /* Adjust the height as needed */
-  }
-  
   .title {
-    font-size: 24px; /* Adjust the font size as needed */
-    margin-top: 10px; /* Adjust the margin-top as needed */
+    font-size: 60px; /* Adjust the font size as needed */
+    margin-top: -80px; /* Adjust the margin-top as needed */
   }
   
   .description {

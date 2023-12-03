@@ -81,7 +81,6 @@ const App = () => {
             />}
           />
           <Route path="/modify-flights" element={<ModifyFlight />} />
-
         </Routes>
       </div>
     </Router>

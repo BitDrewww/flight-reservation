@@ -54,11 +54,11 @@ const Payment = (props) => {
 
       <form>
         {/* Add your credit card form fields here */}
-        <label>Card Number: </label>
+        <label>Card Number:   </label>
         <input type="text" />
-        <label>Expiration Date: </label>
+        <label>  Expiration Date: </label>
         <input type="text" />
-        <label>CVV: </label>
+        <label>   CVV:   </label>
         <input type="text" />
         <button type="button" onClick={handlePaymentSubmit}>
           Submit Payment
