@@ -11,6 +11,7 @@ const Payment = (props) => {
   const { user } = useContext(AuthContext);
 
   const handlePayment = () => {
+    try{
     axios.put(`http://localhost:3001/api/flights/reserve`, {
       flightId: flightDetails.id,
       userEmail: user.email,
@@ -20,7 +21,9 @@ const Payment = (props) => {
     .then(() => 
     {alert("Booked successfully")
     navigate(`/modify-flights`);})
-    
+    } catch (error) {
+      alert(  "Please Login First to Book the Flight");
+    } 
   };
 
   return (

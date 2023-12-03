@@ -1,4 +1,4 @@
-// routes/flights.js
+// routes/auth.js
 const express = require('express');
 const router = express.Router();
 const { registerUser, login } = require('../controllers/loginController');

@@ -70,7 +70,7 @@ const BrowseFlights = (props) => {
             {searchResults.length > 0 ? (
               searchResults.map(flight => (
                 <li key={flight.id}>
-                  {flight.departure} - {flight.arrival} ({new Date(flight.flightDt).toLocaleString() })
+                  {flight.departure} - {flight.arrival} ({new Date(flight.flightDt).toLocaleString()})- {'$'+flight.price}
                   <button onClick={() => handleSelect(flight)} style={{ marginLeft: '10px' }}>Select</button>
                 </li>
               ))

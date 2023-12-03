@@ -19,6 +19,7 @@ const ModifyFlight = () => {
 
   const handleCancelFlight = async (flightId) => {
     try {
+      alert("Flight Cancelled Successfully, You have been Refunded")
       console.log(`Canceling flight with ID: ${flightId}`);
       await axios.delete(`http://localhost:3001/api/flights/reservation/${flightId}`)
       await fetchBookedFlights();
@@ -42,7 +43,7 @@ const ModifyFlight = () => {
             <p>Destination: {flight.arrival}</p>
             <p>Price: {flight.price}</p>
             {/* Add more flight details as needed */}
-            <button onClick={() => handleCancelFlight(flight.reservation_id)}>Cancel</button>
+            <button onClick={() => handleCancelFlight(flight.reservation_id)} >Cancel</button>
           </li>
         ))}
       </ul>
