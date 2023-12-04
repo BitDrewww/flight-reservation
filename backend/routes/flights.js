@@ -1,34 +1,17 @@
 // routes/flights.js
 const express = require('express');
 const router = express.Router();
-// const flightController = require('../controllers/flightController');
-// cancel flight notification
-const { findAllFlight, findOneFlight, createFlight, updateFlight, deleteFlight, cancelFlight } = require('../controllers/flightController');
-router.get('/', findAllFlight);
-router.get('/:id', findOneFlight);
-router.post('/', createFlight);
-router.put('/:id', updateFlight);
-router.delete('/:id', deleteFlight);
+const { findAllFlight, searchFlight, cancelReservation, getMyFlights, cancelFlight, createNewFlight } = require('../controllers/flightController');
+const { registerUser } = require('../controllers/loginController');
+const { reserveFlight } = require('../controllers/paymentController');
+router.get('/', adminGetFlights);
+router.get('/:date/:departure/:arrival', searchFlight);
+router.get('/my-flights', getMyFlights);
 
-// module.exports = router;
-
-// PUT request to update the flight status to 'cancelled'
-//router.put('/cancel/:id', async (req, res) => {
-//    try {
-//      const flightId = req.params.id;
-//      // Logic to cancel the flight by ID using your data model
-//      // This would typically involve setting a 'status' field to 'cancelled'
-//      // and persisting this change in the database.
-//
-//      // For now, let's assume a successful cancellation
-//      res.status(200).json({ message: 'Flight cancelled successfully' });
-//    } catch (error) {
-//      res.status(500).json({ message: 'Error cancelling flight' });
-//    }
-//  });
-
-
-// Define the route for flight cancellation
-router.put('/cancel/:id', cancelFlight);
-
+router.delete('/:flightId', cancelFlight);
+router.delete('/reservation/:reservationId', cancelReservation);
+// Route for Make Payment
+router.put('/reserve', reserveFlight);
+router.post('/', createNewFlight);
+// Route for creating users
 module.exports = router;

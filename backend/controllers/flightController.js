@@ -1,12 +1,59 @@
 // Import the database connection
 const db = require('../database/db');
 
-findAllFlight = (req, res) => {
-  // Logic to return all flights
-  db.query('SELECT * FROM flights', (error, results) => {
+adminGetFlights = (req, res) => {
+  db.query('SELECT * FROM Flights', (error, results) => {
     if (error) {
       res.status(500).send({
         message: 'Error retrieving flights',
+        error: error.message
+      });
+    } else {
+      const flights = results;
+      db.query('SELECT * FROM Reservation', (error, results) => {
+        if (error) {
+          res.status(500).send({
+            message: 'Error retrieving reservations',
+            error: error.message
+          });
+        } else {
+          const reservations = results;
+          res.status(200).json(flights.map((flight) => {
+            const reservationsForFlight = reservations.filter((reservation) => reservation.flight_id === flight.id);
+            return {
+              ...flight,
+              reservations: reservationsForFlight
+            };
+          }));
+        }
+      });
+    }
+  });
+};
+
+createNewFlight = (req, res) => {
+  const { flightDt, departure, arrival, price, seats } = req.body;
+  db.query('INSERT INTO Flights (flightDt, departure, arrival, price) VALUES (?, ?, ?, ?)', [flightDt, departure, arrival, price, seats], (error, results) => {
+    if (error) {
+      res.status(500).send({
+        message: 'Error creating new flight',
+        error: error.message
+      });
+    } else {
+      res.status(200).json({ status: 'ok' });
+    }
+  });
+}
+
+searchFlight = (req, res) => {
+  const date = req.params.date;
+  const departure = req.params.departure;
+  const arrival = req.params.arrival;
+  db.query('SELECT * FROM Flights WHERE DATE(flightDt) = ? and departure = ? and arrival = ?', [date, departure, arrival], (error, results) => {
+    if (error) {
+      console.log("error occured"+ error)
+      res.status(500).send({
+        message: `Error retrieving flight`,
         error: error.message
       });
     } else {
@@ -15,87 +62,67 @@ findAllFlight = (req, res) => {
   });
 };
 
-findOneFlight = (req, res) => {
-  // Logic to return a single flight by ID
-  const id = req.params.id;
-  db.query('SELECT * FROM flights WHERE id = ?', [id], (error, results) => {
-    if (error) {
-      res.status(500).send({
-        message: `Error retrieving flight with id ${id}`,
-        error: error.message
-      });
-    } else {
-      res.status(200).json(results[0]);
-    }
-  });
-};
-
 createFlight = (req, res) => {
-  // Logic to create a new flight
-  const newFlight = req.body; // Assuming you have middleware to parse the body
-  console.log(newFlight);
-  db.query('INSERT INTO flights SET ?', newFlight, (error, results) => {
+  const { datetime, departure, arrival, price } = req.body;
+  db.query('INSERT INTO Flights (flightDt, departure, arrival, price) VALUES (?, ?, ?, ?)', [datetime, departure, arrival, price], (error, results) => {
     if (error) {
       res.status(500).send({
         message: 'Error creating new flight',
         error: error.message
       });
     } else {
-      res.status(201).json({ id: results.insertId, ...newFlight });
+      res.status(200).json({ status: 'ok' });
     }
   });
-};
+}
 
-updateFlight = (req, res) => {
-  // Logic to update a flight by ID
-  const id = req.params.id;
-  const flightUpdates = req.body;
-  db.query(
-    'UPDATE flights SET ? WHERE id = ?',
-    [flightUpdates, id],
-    (error, results) => {
-      if (error) {
-        res.status(500).send({
-          message: `Error updating flight with id ${id}`,
-          error: error.message
-        });
-      } else {
-        res.status(200).json({ id: id, ...flightUpdates });
-      }
-    }
-  );
-};
-
-deleteFlight = (req, res) => {
-  // Logic to delete a flight by ID
-  const id = req.params.id;
-  db.query('DELETE FROM flights WHERE id = ?', [id], (error, results) => {
+cancelFlight = (req, res) => {
+  const flightId = req.params.flightId;
+  db.query('DELETE from Flights WHERE id = ?', [flightId], (error, results) => {
     if (error) {
+      console.log("error occured"+ error)
       res.status(500).send({
-        message: `Error deleting flight with id ${id}`,
+        message: `Error retrieving flight`,
         error: error.message
       });
     } else {
-      res.status(200).json({ message: `Flight with id ${id} successfully deleted` });
+      res.status(200).json({status:"ok"});
     }
   });
-};
+}
 
-// cancel flight notification
-const { sendCancellationEmail } = require('../services/emailService');
-
-const cancelFlight = async (req, res) => {
+cancelReservation = async (req, res) => {
   try {
-    const flightId = req.params.id;
-    // ...cancellation logic...
-
-    // After successful cancellation, send an email
-    await sendCancellationEmail(req.user.email, flightId);
-
-    res.status(200).json({ message: 'Flight cancelled successfully, email sent' });
+    const reservationId = req.params.reservationId;
+    db.query('DELETE from Reservation WHERE reservation_id = ?', [reservationId], (error, results) => {
+      if (error) {
+        console.log("error occured"+ error)
+        res.status(500).send({
+          message: `Error retrieving flight`,
+          error: error.message
+        });
+      } else {
+        res.status(200).json({status:"ok"});
+      }
+    });
   } catch (error) {
     res.status(500).json({ message: 'Error cancelling flight' });
   }
 };
 
-module.exports = { findAllFlight, findOneFlight, createFlight, updateFlight, deleteFlight, cancelFlight };
+getMyFlights = (req, res) => {
+  const email = req.query.userEmail;
+  db.query('SELECT * FROM Flights JOIN Reservation ON Flights.id = Reservation.flight_id AND Reservation.email = ?', [email], (error, results) => {
+    if (error) {
+      console.log("error occured"+ error)
+      res.status(500).send({
+        message: `Error retrieving flight`,
+        error: error.message
+      });
+    } else {
+      res.status(200).json(results);
+    }
+  });
+}
+
+module.exports = { adminGetFlights, createNewFlight, searchFlight, cancelReservation, getMyFlights, cancelFlight };

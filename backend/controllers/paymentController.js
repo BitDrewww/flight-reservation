@@ -1,31 +1,27 @@
 // paymentController.js
 
-// Import necessary modules
-const PaymentService = require('../services/paymentService'); // Adjust path as needed
+const db = require('../database/db');
+const express = require('express');
 
-/**
- * Handles payment processing.
- * @param {Request} req - The request object from Express.js.
- * @param {Response} res - The response object from Express.js.
- */
-exports.processPayment = async (req, res) => {
-    try {
-        const { paymentDetails } = req.body;
+reserveFlight = (req,res) => {
+    const {
+        flightId,
+        seatId,
+        price,
+        userEmail: email,
+    } = req.body;
 
-        // Here you would call your PaymentService to handle the actual payment processing.
-        // For example, if you're using Stripe, this is where you'd create a charge.
-        const paymentResult = await PaymentService.processPayment(paymentDetails);
-
-        // Sending success response with payment details
-        res.status(200).json({
-            message: "Payment processed successfully",
-            paymentResult
-        });
-    } catch (error) {
-        console.error(error.message);
-        // Sending error response
-        res.status(500).json({ message: "Payment processing failed", error: error.message });
-    }
+    db.query('INSERT INTO Reservation(flight_id, seat_id, price, email) VALUES (?, ?, ?, ?)', [flightId, seatId, price, email], (error, results) => {
+        if (error) {
+            console.log("error occured"+ error)
+            res.status(500).send({
+                message: `Error retrieving flight`,
+                error: error.message
+            });
+        } else {
+            res.status(200).send();
+        }
+    });
 };
 
-// You would also have other functions as needed for refund, receipt sending, etc.
+module.exports = {reserveFlight};

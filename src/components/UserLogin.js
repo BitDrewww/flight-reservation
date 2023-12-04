@@ -1,27 +1,26 @@
 // UserLogin.js
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import axios from 'axios';
+import { AuthContext } from './auth/AuthContext';
+import { useNavigate } from 'react-router-dom';
 
 const UserLogin = ({ onLoginSuccess }) => {
   const [loginData, setLoginData] = useState({
     email: '',
     password: '',
   });
-
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    setLoginData({ ...loginData, [name]: value });
-  };
+  const { user, setUser } = useContext(AuthContext);
+  const navigate = useNavigate();
 
   const handleLogin = async (e) => {
     e.preventDefault();
 
     try {
-      const response = await axios.post('/api/login', loginData);
-      console.log('Login successful:', response.data);
-      onLoginSuccess();
+      const response = await axios.post('http://localhost:3001/api/auth/login', loginData);
+      setUser(response.data);
+      navigate('/modify-flights');
     } catch (error) {
-      console.error('Login error:', error);
+      alert('Login error');
     }
   };
 
@@ -35,7 +34,7 @@ const UserLogin = ({ onLoginSuccess }) => {
           id="email"
           name="email"
           value={loginData.email}
-          onChange={handleInputChange}
+          onChange={(newVal) => setLoginData((prev) => ({ ...prev, email: newVal.target.value }))}
           style={{ marginBottom: '10px' }} // Added margin at the bottom
         />
         
@@ -45,7 +44,7 @@ const UserLogin = ({ onLoginSuccess }) => {
           id="password"
           name="password"
           value={loginData.password}
-          onChange={handleInputChange}
+          onChange={(newVal) => setLoginData((prev) => ({ ...prev, password: newVal.target.value }))}
           style={{ marginBottom: '10px' }} // Added margin at the bottom
         />
         
